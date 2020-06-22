@@ -34,7 +34,7 @@ class App extends Component {
     return (
       <div className="App">
 
-        <h1>Art!</h1>
+        <h1>Art!Art!Art!</h1>
 
         {this.state.artwork.map((item) => {
           return (
