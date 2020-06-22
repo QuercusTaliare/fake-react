@@ -1,26 +1,60 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component, Fragment } from 'react';
+import axios from 'axios';
 import './App.css';
+import ArtPiece from './ArtPiece';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      artwork: []
+    }
+  }
+
+  componentDidMount() {
+
+    axios({
+      url: 'https://www.rijksmuseum.nl/api/en/collection',
+      method: 'GET',
+      responseType: 'json',
+      params: {
+        key: 'BTKb4kKl',
+        format: 'json'
+      }
+    }).then((response) => {
+      this.setState({
+        artwork: response.data.artObjects
+      })
+    })
+
+  }
+
+  render() {
+
+    return (
+      <div className="App">
+
+        <h1>Art!</h1>
+
+        {this.state.artwork.map((item) => {
+          return (
+            
+              <ArtPiece 
+                imageTitle={item.title}
+                imageSource={item.webImage.url}
+                imageInfo={item.longTitle}
+                imageId={item.id}
+              />
+            
+          )
+        })}
+
+
+
+      </div>
+    )
+
+  }
 }
 
 export default App;
